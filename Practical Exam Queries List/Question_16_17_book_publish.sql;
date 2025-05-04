@@ -1,0 +1,59 @@
+create database practice;
+use practice;
+
+create table pub_house(
+p_id int primary key,
+p_name varchar(200),
+location varchar(255)
+);
+
+create table book(
+b_id int primary key,
+title varchar(100),
+author varchar(100),
+price int,
+p_id int,
+FOREIGN KEY(p_id) references pub_house(p_id)
+);
+
+
+-- Insert sample values into pub_house
+INSERT INTO pub_house (p_id, p_name, location) VALUES
+(1, 'Penguin', 'NY'),
+(2, 'Harper', 'LA'),
+(3, 'Simon', 'SF');
+
+-- Insert sample values into book
+INSERT INTO book (b_id, title, author, price, p_id) VALUES
+(101, 'Sky High', 'A. Roy', 500, 1),
+(102, 'Deep Blue', 'B. Lee', 600, 2),
+(103, 'Night Owl', 'C. Fox', 550, 3),
+(104, 'Sunrise', 'D. Ray', 700, 1),
+(105, 'Moonlight', 'E. Kay', 650, 2);
+
+
+select p.p_name, sum(b.price) as total_price
+from pub_house as p 
+JOIN 
+book as b
+ON p.p_id=b.p_id
+Group by p.p_id;
+
+create view vw_book AS Select title from book order by title DESC;
+select * from vw_book;
+
+select * from pub_house where p_name like '%n';
+
+update pub_house set location='Mumbai' where p_id=1;
+SET SQL_SAFE_UPDATES=0;
+delete from book where title='Moonlight';
+SET SQL_SAFE_UPDATES=1;
+
+select * from book;
+
+select p_name from pub_house where p_id=(select p_id from book where title='Sunrise');
+
+
+
+
+
